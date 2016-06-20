@@ -54,6 +54,17 @@ public class GameBoard {
 		}
 	}
 	
+	//takes in the column that the player would like to make a move in, as well as the player color
+	public void addPiece(int col, char color, Move[][] pieces){
+		for(int i = 0; i < this.numRows; i++){
+			if(this.board[i][col] == 'w'){
+				this.board[i][col] = color;
+				pieces[i][col].changeColor(color);	
+				break;
+			}
+		}
+	}
+	
 	public boolean checkMoveForWin(int rowOrigin, int colOrigin, char color){
 		/*char otherColor;
 		if(color == 'r') otherCol = 'b';
@@ -147,7 +158,7 @@ public class GameBoard {
 	
 	//Display the gameboard
 	public void displayBoard(){
-		for(int i = 0; i < numRows; i++){
+		for(int i = numRows-1; i >= 0; i--){
 			for(int j = 0; j < numCols; j++){
 				System.out.print(Character.toString(this.board[i][j]) + " ");
 			}
@@ -270,13 +281,21 @@ public class GameBoard {
 	
 	
 	
+	public void takeTurn(Player player, int depth){
+		int move = player.MiniMax(this, depth);
+		addPiece(move, player.getColor());
+	}
+	
+	public void takeTurn(Player player, int depth, Move[][] piece){
+		int move = player.MiniMax(this, depth);
+		addPiece(move, player.getColor(), piece);
+	}
 	
 	
 	
 	
 	
-	
-	
+	/*
 	
 	//Calculate the score of a certain position, based on the surrounding pieces
 	//This will later be used to calculate the strength of a move that does not necessarily cause a win or loss
@@ -296,6 +315,6 @@ public class GameBoard {
 		return 0;
 	}
 
-	
+	*/
 	
 }

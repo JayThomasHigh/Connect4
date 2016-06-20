@@ -2,7 +2,6 @@
 public class Player {
 	private boolean turn;
 	private char color;
-	private String name;
 	private char oppositeColor;
 	private static int [][] evaluationTable =   {{3, 4, 5, 7, 5, 4, 3}, 
 												{4, 6, 8, 10, 8, 6, 4},
@@ -13,7 +12,6 @@ public class Player {
 	
 	public Player(char color, String name, boolean turn){
 		this.color = color;
-		this.name = name;
 		this.turn = turn;
 		if(color == 'b'){
 			this.oppositeColor = 'r';
