@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 
 //import java.util.Scanner;
@@ -82,6 +83,10 @@ public class gameBoardGUI {
 			lblChooseYourSettings.setText("Choose Your Settings");
 			
 			Button btnTwoPlayer = new Button(shell, SWT.NONE);
+			
+			Button btnOnline = new Button(shell, SWT.NONE);
+			btnOnline.setBounds(70, 460, 203, 25);
+			btnOnline.setText("Online MP");
 
 			
 			Button btnSinglePlayer = new Button(shell, SWT.NONE);
@@ -96,6 +101,7 @@ public class gameBoardGUI {
 				lblChooseYourSettings.dispose();
 				lblL.dispose();
 				btnTwoPlayer.dispose();
+				btnOnline.dispose();
 				gameMode = 2;
 				
 				//creates the gameboard
@@ -127,7 +133,7 @@ public class gameBoardGUI {
 				lblL.dispose();
 				btnTwoPlayer.dispose();
 				gameMode = 2;
-				
+				btnOnline.dispose();
 				//creates the gameboard
 				createGameBoard(pieces);
 
@@ -148,26 +154,134 @@ public class gameBoardGUI {
 			});
 			btnTwoPlayer.setBounds(70, 413, 203, 25);
 			btnTwoPlayer.setText("Two Player");
+			
+		////Here we will program in the slightly different network features of the game
+			btnOnline.addSelectionListener(new SelectionAdapter() {
+				@Override
+
+				public void widgetSelected(SelectionEvent e) {
+				//clears the old pieces
+				btnSinglePlayer.dispose();
+				lblChooseYourSettings.dispose();
+				lblL.dispose();
+				btnTwoPlayer.dispose();
+				btnOnline.dispose();
+			
+				createOnlineMenu();
+				
+				}
+			});
 		} catch (Exception e){
 			
 		}
 
 	}
-	/**
-	 * Create the main game menu
-	 */
-/*	protected void mainMenu(){
-		try{
-			Image titleImage = new Image(null, "src/resources/title.jpg");
-			Label titleLabel = new Label(this.shell, SWT.NONE);
-			//titleLabel.setImage(titleImage);
-			titleLabel.setBounds(35,20, 300, 100);
 
-		} catch (Exception e){
+	
+	
+	protected void createOnlineMenu(){
+		Text clientTextPort = new Text(shell, SWT.BORDER);
+		clientTextPort.setBounds(42, 225, 76, 21);
+		
+		Text clientTextHost = new Text(shell, SWT.BORDER);
+		clientTextHost.setBounds(42, 279, 76, 21);
+		
+		Button btnRunClient = new Button(shell, SWT.NONE);
+		btnRunClient.setBounds(42, 333, 75, 25);
+		btnRunClient.setText("run Client");
+		
+		Button btnRunServer = new Button(shell, SWT.NONE);
+		btnRunServer.setBounds(247, 333, 75, 25);
+		btnRunServer.setText("Run Server");
+		
+		Text serverTextPort = new Text(shell, SWT.BORDER);
+		serverTextPort.setBounds(246, 279, 76, 21);
+		
+		Label lblPortNumber = new Label(shell, SWT.NONE);
+		lblPortNumber.setBounds(50, 186, 106, 15);
+		lblPortNumber.setText("Port Number");
+		
+		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel.setBounds(51, 258, 67, 15);
+		lblNewLabel.setText("Host Name");
+		
+		Label lblPortNumber_1 = new Label(shell, SWT.NONE);
+		lblPortNumber_1.setBounds(236, 244, 86, 15);
+		lblPortNumber_1.setText("Port Number");	
+		
+
+		
+		btnRunClient.addSelectionListener(new SelectionAdapter() {
+			@Override
+
+			public void widgetSelected(SelectionEvent e) {
+			//clears the old pieces
+			final int portNumberClient = Integer.parseInt(clientTextPort.getText());
+			final String hostNameClient = clientTextHost.getText();
+			final int portServer = Integer.parseInt(serverTextPort.getText());
+			clientTextPort.dispose();
+			clientTextHost.dispose();
+			btnRunClient.dispose();
+			btnRunServer.dispose();
+			serverTextPort.dispose();
+			lblPortNumber.dispose();
+			lblNewLabel.dispose();
+			lblPortNumber_1.dispose();
 			
+			createGameBoard(pieces);
+			
+			final Thread multiGame = new Thread(new Runnable() {
+			public void run(){
+				try {
+					GamePlay.clientPlay(hostNameClient, portNumberClient);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		multiGame.start();
 		}
+		});
+		
+		
+		btnRunServer.addSelectionListener(new SelectionAdapter() {
+			@Override
+
+			public void widgetSelected(SelectionEvent e) {
+			//clears the old pieces
+			final int portServer = Integer.parseInt(serverTextPort.getText());
+			clientTextPort.dispose();
+			clientTextHost.dispose();
+			btnRunClient.dispose();
+			btnRunServer.dispose();
+			serverTextPort.dispose();
+			lblPortNumber.dispose();
+			lblNewLabel.dispose();
+			lblPortNumber_1.dispose();
+			
+			createGameBoard(pieces);
+			
+			final Thread multiGame = new Thread(new Runnable() {
+			public void run(){
+				try {
+					GamePlay.hostGamePlay(portServer);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		multiGame.start();
+		}
+		});
+		
+			
+							
+			
 	}
-	*/
+	
+	
 	/**
 	 * Create the gameboard, and initiate game moves
 	 */
@@ -279,6 +393,7 @@ public class gameBoardGUI {
 			
 		});
 		
+		
 		Button btnMoveSix = new Button(shell, SWT.NONE);
 		btnMoveSix.setBounds(260, 50, 50, 50);
 		btnMoveSix.setImage(btImage);
@@ -335,6 +450,10 @@ public class gameBoardGUI {
 	
 	
 	
+	
+	
+	
+//10.11.16.57
 	
 	
 	
