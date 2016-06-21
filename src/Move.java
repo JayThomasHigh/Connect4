@@ -9,7 +9,7 @@ public class Move {
 	public int row;
 	public int col;
 	public char color;
-	public Label label;
+	public final Label label;
 	public int offsetY;
 	public int offsetX;
 	public int size;
@@ -30,25 +30,14 @@ public class Move {
 	}
 	
 	public void initiatePiece() {
-		final Label thisLabel = this.label;
-		gameBoardGUI.display.syncExec(new Runnable(){
-			@Override
-			public void run(){
 		try{
-			
-			thisLabel.setImage(whiteImage);
-			thisLabel.setBounds(50*col+offsetY,50*row + offsetX, 50, 50);
-		}catch(Exception e){
-			
+			this.label.setImage(whiteImage);
+			this.label.setBounds(50*col+offsetY,50*row + offsetX, 50, 50);
+		}catch(Exception e){	
 		}
-		}
-		});
 	}
 	
 	public void changeColor(char colors){
-		gameBoardGUI.display.asyncExec(new Runnable(){
-			@Override
-			public void run(){
 			if(colors == 'r'){
 					this.label.setImage(redImage);
 				} else if(colors == 'b'){
@@ -56,9 +45,10 @@ public class Move {
 				} else{
 					this.label.setImage(whiteImage);
 				}
-				}
-			});
 	}
+	
+	
+	
 	
 	public int getRow(){
 		return this.row;

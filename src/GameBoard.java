@@ -55,11 +55,19 @@ public class GameBoard {
 	}
 	
 	//takes in the column that the player would like to make a move in, as well as the player color
-	public void addPiece(int col, char color, Move[][] pieces){
+	public void addPiece(int col, char color, final Move[][] pieces){
 		for(int i = 0; i < this.numRows; i++){
 			if(this.board[i][col] == 'w'){
 				this.board[i][col] = color;
-				pieces[i][col].changeColor(color);	
+				final int I = i;
+				
+				gameBoardGUI.display.asyncExec(new Runnable() {
+					
+					public void run(){
+						pieces[I][col].changeColor(color);	//Maybe this is what should be ran exec	
+					
+					}
+				});
 				break;
 			}
 		}
@@ -96,7 +104,7 @@ public class GameBoard {
 		row = rowOrigin;
 		//System.out.println(Integer.toString(rowCount));
 	//	System.out.println(Integer.toString(rowOrigin));
-		if(rowCount == 4) return true;
+		if(rowCount >= 4) return true;
 		//check column for win
 		while(col > 0){
 			col--;
@@ -112,7 +120,7 @@ public class GameBoard {
 			} else break;
 		}
 		col = colOrigin;
-		if(colCount==4) return true;
+		if(colCount>=4) return true;
 		//check Diagnal for win
 		while(col > 0 && row < numRows-1){
 			col--;
@@ -132,7 +140,7 @@ public class GameBoard {
 		}
 		col = colOrigin;
 		row = rowOrigin;
-		if(lDiagCount == 4) return true;			
+		if(lDiagCount >= 4) return true;			
 		//check other diagonal for win
 		//check Diagnal for win
 		while(col > 0 && row > 0){
@@ -151,9 +159,103 @@ public class GameBoard {
 				rDiagCount++;
 			} else break;
 		}
-		if(rDiagCount == 4) return true;		
+		if(rDiagCount >= 4) return true;		
 		return false;
 	}
+	
+	
+	
+	public double checkMoveForScore(int rowOrigin, int colOrigin, char color){
+		/*char otherColor;
+		if(color == 'r') otherCol = 'b';
+		if(color == 'b') otherCol = 'r';*/
+		int row = rowOrigin;
+		int col = colOrigin;
+		int rowCount = 1;
+		int colCount = 1;
+		int lDiagCount = 1;
+		int rDiagCount = 1;
+		//Check row for win
+		while(row > 0){
+			row--;
+			if(this.board[row][col] == color){
+				rowCount++;
+			} else{
+				break;
+			}
+		}
+		row = rowOrigin;
+		while(row < this.numRows-1){
+			row++;
+			if(this.board[row][col] == color){
+				rowCount++;
+			} else {
+				break;
+			}
+		}
+		row = rowOrigin;
+		//System.out.println(Integer.toString(rowCount));
+	//	System.out.println(Integer.toString(rowOrigin));
+		if(rowCount >= 4) return 4;
+		//check column for win
+		while(col > 0){
+			col--;
+			if(this.board[row][col] == color){
+				colCount++;
+			} else break;
+		}
+		col = colOrigin;
+		while(col < this.numCols-1){
+			col++;
+			if(this.board[row][col] == color){
+				colCount++;
+			} else break;
+		}
+		col = colOrigin;
+		if(colCount>=4) return 4;
+		//check Diagnal for win
+		while(col > 0 && row < numRows-1){
+			col--;
+			row++;
+			if(this.board[row][col] == color){
+				lDiagCount++;
+			} else break;
+		}
+		col = colOrigin;
+		row = rowOrigin;
+		while(col < numCols-1 && row > 0){
+			col++;
+			row--;
+			if(this.board[row][col] == color){
+				lDiagCount++;
+			} else break;
+		}
+		col = colOrigin;
+		row = rowOrigin;
+		if(lDiagCount >= 4) return 4;		
+		//check other diagonal for win
+		//check Diagnal for win
+		while(col > 0 && row > 0){
+			col--;
+			row--;
+			if(this.board[row][col] == color){
+				rDiagCount++;
+			} else break;
+		}
+		col = colOrigin;
+		row = rowOrigin;
+		while(col < numCols-1 && row < numRows-1){
+			col++;
+			row++;
+			if(this.board[row][col] == color){
+				rDiagCount++;
+			} else break;
+		}
+		if(rDiagCount >= 4) return 4;		
+		int maxScore = Math.max(Math.max(Math.max(rowCount,  colCount), lDiagCount), rDiagCount);
+		return 2^maxScore;
+	}
+	
 	
 	
 	//Display the gameboard
@@ -286,9 +388,13 @@ public class GameBoard {
 		addPiece(move, player.getColor());
 	}
 	
-	public void takeTurn(Player player, int depth, Move[][] piece){
+	//takes in the player with color, required depth and array of pieces for the gUI
+	//returns true if the turn wins, false otherwise
+	public boolean takeTurn(Player player, int depth, Move[][] piece){
 		int move = player.MiniMax(this, depth);
+		int rowIndex = checkHighestRow(move);
 		addPiece(move, player.getColor(), piece);
+		return checkMoveForWin(rowIndex, move, player.getColor());
 	}
 	
 	
