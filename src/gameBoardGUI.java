@@ -218,7 +218,6 @@ public class gameBoardGUI {
 			//clears the old pieces
 			final int portNumberClient = Integer.parseInt(clientTextPort.getText());
 			final String hostNameClient = clientTextHost.getText();
-			final int portServer = Integer.parseInt(serverTextPort.getText());
 			clientTextPort.dispose();
 			clientTextHost.dispose();
 			btnRunClient.dispose();
@@ -299,7 +298,7 @@ public class gameBoardGUI {
 		mainMenuButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(moveReady = true){
+			//if(moveReady == true  ){
 					moveMade = 10; //This will be the termination code
 					moveReady = false;
 					condMove = new Semaphore(0);	
@@ -313,7 +312,7 @@ public class gameBoardGUI {
 						ee.printStackTrace();
 					}
 					
-			}
+		//	}
 			}
 		});
 		
@@ -323,7 +322,7 @@ public class gameBoardGUI {
 		btnMoveOne.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 0;
 				moveReady = false;
 				condMove.release();
@@ -339,7 +338,7 @@ public class gameBoardGUI {
 		btnMoveTwo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 1;
 				moveReady = false;
 				condMove.release();
@@ -354,7 +353,7 @@ public class gameBoardGUI {
 		btnMoveThree.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 2;
 				moveReady = false;
 				condMove.release();
@@ -369,7 +368,7 @@ public class gameBoardGUI {
 		btnMoveFour.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 3;
 				moveReady = false;
 				condMove.release();
@@ -384,7 +383,7 @@ public class gameBoardGUI {
 		btnMoveFive.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 4;
 				moveReady = false;
 				condMove.release();
@@ -400,7 +399,7 @@ public class gameBoardGUI {
 		btnMoveSix.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 5;
 				moveReady = false;
 				condMove.release();
@@ -415,7 +414,7 @@ public class gameBoardGUI {
 		btnMoveSeven.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			if(moveReady = true){
+			if(moveReady == true){
 				moveMade = 6;
 				moveReady = false;
 				condMove.release();
